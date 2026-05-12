@@ -7,7 +7,8 @@ import TaskList from "../task/TaskList";
 import TaskStatusFilter from "../task/TaskStatusFilter";
 import AddIcon from '@mui/icons-material/Add';
 import { useAuth } from "../auth/AuthContext";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
+import AlertDialog from "../shared/AlertDialog";
 
 export default function ProjectDetailPage() {
     const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -15,6 +16,7 @@ export default function ProjectDetailPage() {
     const [error, setError] = useState<string>('');
     const { token } = useAuth();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const load = async () => {
@@ -45,6 +47,30 @@ export default function ProjectDetailPage() {
         load();
     }, []);
 
+    const deleteProject = () => {
+        const remove = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
+                    method: "delete",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                });
+
+                if (!res.ok) {
+                    setError("Something went wrong. Try again later");
+                }
+
+                navigate("/");
+            } catch {
+                setError("Something went wrong. Try again later.");
+            }
+        }
+
+        remove();
+    }
 
     if (loading) {
         return <Loading isLoading={loading} />
@@ -56,7 +82,7 @@ export default function ProjectDetailPage() {
             <PageHeader title={project?.name || ''} path="/" />
             <Typography variant="body1">{project?.description}</Typography>
             <Stack direction="row" spacing={3}>
-                <Button variant="outlined" color="error">Delete</Button>
+                <AlertDialog title="Delete project" text="Are you sure you want to delete this project?" onConfirmation={deleteProject} />
                 <Button variant="outlined" color="info" component={Link} to={`/project/${id}/edit`}>Edit</Button>
             </Stack>
             <Stack spacing={2}>
