@@ -7,7 +7,7 @@ import TaskList from "../task/TaskList";
 import TaskStatusFilter from "../task/TaskStatusFilter";
 import AddIcon from '@mui/icons-material/Add';
 import { useAuth } from "../auth/AuthContext";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 export default function ProjectDetailPage() {
     const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -61,7 +61,7 @@ export default function ProjectDetailPage() {
             <Stack spacing={2}>
                 <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
                     <Typography variant="h5">Tasks</Typography>
-                    <Button variant="contained" endIcon={<AddIcon />}>Add task</Button>
+                    <Button variant="contained" endIcon={<AddIcon />} component={Link} to="task/new">Add task</Button>
                 </Stack>
                 <TaskStatusFilter />
                 <TaskList />
