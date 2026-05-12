@@ -19,6 +19,7 @@ import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './core/ProtectedRoute';
 import BasicLayout from './core/BasicLayout';
 import NewTaskPage from './task/NewTaskPage';
+import UpdateProjectPage from './project/UpdateProjectPage';
 
 const darkTheme = createTheme({
   palette: {
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
               <Route index element={<ProjectsPage />} />
               <Route path="project/new" element={<NewProjectPage />} />
               <Route path="project/:id" element={<ProjectDetailPage />} />
+              <Route path="project/:id/edit" element={<UpdateProjectPage />} />
               <Route path="project/:projectId/task/new" element={<NewTaskPage />} />
               <Route path="project/:projectId/task/:taskId" element={<TaskDetailPage />} />
             </Route>

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import z from "zod";
 import PageHeader from "../shared/PageHeader";
+import type { ProjectDetail } from "./models";
 
 const projectSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long.").max(100, "Name must be 50 characters or less"),
@@ -17,10 +18,17 @@ type Props = {
     title: string;
     onCancelNavigate: string;
     error: string;
+    project?: ProjectDetail | null;
 }
 
-export default function ProjectForm({ onSubmit, title, onCancelNavigate, error }: Props) {
-    const { register, handleSubmit, formState: { errors } } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+export default function ProjectForm({ onSubmit, title, onCancelNavigate, error, project }: Props) {
+    const { register, handleSubmit, formState: { errors } } = useForm<ProjectFormData>({
+        resolver: zodResolver(projectSchema),
+        defaultValues: {
+            name: project?.name,
+            description: project?.description
+        }
+    });
 
     return (
         <Stack spacing={3}>

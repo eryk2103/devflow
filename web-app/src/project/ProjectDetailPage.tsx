@@ -45,6 +45,7 @@ export default function ProjectDetailPage() {
         load();
     }, []);
 
+
     if (loading) {
         return <Loading isLoading={loading} />
     }
@@ -56,7 +57,7 @@ export default function ProjectDetailPage() {
             <Typography variant="body1">{project?.description}</Typography>
             <Stack direction="row" spacing={3}>
                 <Button variant="outlined" color="error">Delete</Button>
-                <Button variant="outlined" color="info">Edit</Button>
+                <Button variant="outlined" color="info" component={Link} to={`/project/${id}/edit`}>Edit</Button>
             </Stack>
             <Stack spacing={2}>
                 <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
