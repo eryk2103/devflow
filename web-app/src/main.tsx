@@ -20,6 +20,7 @@ import ProtectedRoute from './core/ProtectedRoute';
 import BasicLayout from './core/BasicLayout';
 import NewTaskPage from './task/NewTaskPage';
 import UpdateProjectPage from './project/UpdateProjectPage';
+import UpdateTaskPage from './task/UpdateTaskPage';
 
 const darkTheme = createTheme({
   palette: {
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="project/:id/edit" element={<UpdateProjectPage />} />
               <Route path="project/:projectId/task/new" element={<NewTaskPage />} />
               <Route path="project/:projectId/task/:taskId" element={<TaskDetailPage />} />
+              <Route path="project/:projectId/task/:taskId/edit" element={<UpdateTaskPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

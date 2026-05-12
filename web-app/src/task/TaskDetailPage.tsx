@@ -2,24 +2,43 @@ import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 import PageHeader from "../shared/PageHeader";
 import { useEffect, useState } from "react";
 import { type Task } from "./models";
-import { TASK_DATA } from "../data";
 import Loading from "../core/Loading";
+import { useAuth } from "../auth/AuthContext";
+import { Link, useNavigate, useParams } from "react-router";
+import AlertDialog from "../shared/AlertDialog";
+
+const formatDate = (str: string) => {
+    const date = new Date(str);
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+};
 
 export default function TaskDetailPage() {
     const [task, setTask] = useState<Task | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const { token } = useAuth();
+    const { taskId, projectId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await new Promise<Task>((resolve) => {
-                    setTimeout(() => {
-                        resolve(TASK_DATA);
-                        //reject(new Error());
-                    }, 2000);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                 });
-                setTask(res);
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    setError("Something went wrong. Try again later");
+                }
+
+                setTask({ ...data, createdAt: data.created_at });
             }
             catch {
                 setError("Something went wrong. Try again later.")
@@ -31,6 +50,27 @@ export default function TaskDetailPage() {
         load();
     }, []);
 
+    const handleTaskDelete = async () => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+                method: "delete",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
+
+            if (!res.ok) {
+                setError("Something went wrong. Try again later");
+            }
+
+            navigate(`/project/${projectId}`);
+        } catch {
+            setError("Something went wrong. Try again later.");
+        }
+    }
+
     if (loading) {
         return <Loading isLoading={loading} />
     }
@@ -41,38 +81,42 @@ export default function TaskDetailPage() {
 
     return (
         <Stack spacing={3}>
-            <PageHeader title={task?.name || ''} path={`/project/${task?.projectId}`} />
-            <Stack direction="row" spacing={1}>
-                <Button variant="outlined" color="error">Delete</Button>
-                <Button variant="outlined" color="primary">Edit</Button>
-                <Button variant="outlined" color="secondary">Change status</Button>
-            </Stack>
-            <Stack>
-                <Typography variant="h5">Details</Typography>
-                <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                    <Typography variant="body1">Status</Typography>
-                    <Typography variant="body1">{task?.status}</Typography>
-                </Stack>
-                <Divider />
-                <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                    <Typography variant="body1">Priority</Typography>
-                    <Typography variant="body1">{task?.priority}</Typography>
-                </Stack>
-                <Divider />
-                <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                    <Typography variant="body1">Type</Typography>
-                    <Typography variant="body1">{task?.type}</Typography>
-                </Stack>
-                <Divider />
-                <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                    <Typography variant="body1">Created at</Typography>
-                    <Typography variant="body1">{task?.createdAt}</Typography>
-                </Stack>
-            </Stack>
-            <Stack>
-                <Typography variant="h5">Description</Typography>
-                <Typography variant="body1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima laboriosam accusantium aliquam voluptatum doloribus mollitia sed sunt ducimus fugit possimus, esse dicta error? Quod, veritatis vero. Nesciunt, nemo quo.</Typography>
-            </Stack>
+            {task &&
+                <>
+                    <PageHeader title={task.name} path={`/project/${projectId}`} />
+                    <Stack direction="row" spacing={1}>
+                        <AlertDialog title="Delete task" text="Are you sure you want to delete this task?" onConfirmation={handleTaskDelete} />
+                        <Button variant="outlined" color="primary" component={Link} to="edit">Edit</Button>
+                        <Button variant="outlined" color="secondary">Change status</Button>
+                    </Stack>
+                    <Stack>
+                        <Typography variant="h5">Details</Typography>
+                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                            <Typography variant="body1">Status</Typography>
+                            <Typography variant="body1">{task.status}</Typography>
+                        </Stack>
+                        <Divider />
+                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                            <Typography variant="body1">Priority</Typography>
+                            <Typography variant="body1">{task.priority}</Typography>
+                        </Stack>
+                        <Divider />
+                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                            <Typography variant="body1">Type</Typography>
+                            <Typography variant="body1">{task.type}</Typography>
+                        </Stack>
+                        <Divider />
+                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                            <Typography variant="body1">Created at</Typography>
+                            <Typography variant="body1">{formatDate(task.createdAt)}</Typography>
+                        </Stack>
+                    </Stack>
+                    <Stack>
+                        <Typography variant="h5">Description</Typography>
+                        <Typography variant="body1">{task.description}</Typography>
+                    </Stack>
+                </>
+            }
         </Stack>
     );
 }

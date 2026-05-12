@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Link } from "react-router";
 import z from "zod";
 import PageHeader from "../shared/PageHeader";
-import { priorities, statuses, types } from "./models";
+import { priorities, statuses, types, type Task } from "./models";
 
 const taskSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long.").max(100, "Name must be 100 characters or less"),
@@ -21,17 +21,18 @@ type Props = {
     title: string;
     onCancelNavigate: string;
     error: string;
+    task?: Task | null;
 }
 
-export default function TaskForm({ onSubmit, title, onCancelNavigate, error }: Props) {
+export default function TaskForm({ onSubmit, title, onCancelNavigate, error, task }: Props) {
     const { register, control, handleSubmit, formState: { errors } } = useForm<TaskFormData>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
-            name: "",
-            description: "",
-            type: "FEATURE",
-            status: statuses[0],
-            priority: priorities[0],
+            name: task?.name || "",
+            description: task?.description || "",
+            type: task?.type || "FEATURE",
+            status: task?.status || statuses[0],
+            priority: task?.priority || priorities[0],
         },
     });
 
