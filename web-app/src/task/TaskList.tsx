@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router";
 import { useAuth } from "../auth/AuthContext";
 import Message from "../shared/Message";
 
-export default function TaskList() {
+export default function TaskList({ status }: { status: string }) {
     const [tasks, setTasks] = useState<Task[]>([]);
     const { id } = useParams();
     const { token } = useAuth();
@@ -16,7 +16,7 @@ export default function TaskList() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks?project=${id}`, {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks?project=${id}&status=${status}`, {
                     method: "get",
                     headers: {
                         "Content-Type": "application/json",
@@ -40,15 +40,7 @@ export default function TaskList() {
             }
         }
         load();
-    }, []);
-
-    if (error) {
-        return <Message value="Something went wrong. Try again later." />;
-    }
-
-    if (tasks.length === 0) {
-        return <Message value="No projects found." />;
-    }
+    }, [status]);
 
     if (loading) {
         return (
@@ -56,6 +48,14 @@ export default function TaskList() {
                 <CircularProgress color="inherit" sx={{ mt: 5 }} />
             </Stack>
         );
+    }
+
+    if (error) {
+        return <Message value="Something went wrong. Try again later." />;
+    }
+
+    if (tasks.length === 0) {
+        return <Message value="No projects found." />;
     }
 
     return (

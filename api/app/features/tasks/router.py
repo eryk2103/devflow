@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.db import get_db
 from app.features.users.models import User
 from app.core.dependencies import get_current_user
+from .models import TaskStatus
 from .schemas import TaskResponse, TaskCreate, TaskUpdate, TaskPatch
 from . import services as task_service
 
@@ -14,8 +15,9 @@ tasks_router = APIRouter()
 
 
 @tasks_router.get("", response_model=list[TaskResponse])
-def get_tasks(project: int, user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]):
-    return task_service.get_tasks(db, project, user.id)
+def get_tasks(project: int, status: TaskStatus, user: Annotated[User, Depends(get_current_user)],
+              db: Annotated[Session, Depends(get_db)]):
+    return task_service.get_tasks(db, project, user.id, status=status)
 
 
 @tasks_router.get("/{task_id}", response_model=TaskResponse)
@@ -26,7 +28,7 @@ def get_task(task_id: int, user: Annotated[User, Depends(get_current_user)], db:
 @tasks_router.post("", status_code=201, response_model=TaskResponse)
 def create_task(task: TaskCreate, user: Annotated[User, Depends(get_current_user)],
                 db: Annotated[Session, Depends(get_db)]):
-   return task_service.create_task(db, task, user.id)
+    return task_service.create_task(db, task, user.id)
 
 
 @tasks_router.put("/{task_id}", response_model=TaskResponse)

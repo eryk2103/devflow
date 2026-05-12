@@ -3,15 +3,18 @@ from sqlalchemy.orm import Session
 
 from app.features.projects import services as project_service
 from .exceptions import TaskNotFoundException
-from .models import Task
+from .models import Task, TaskStatus
 from .schemas import TaskCreate, TaskUpdate, TaskPatch
 
 tasks_router = APIRouter()
 
 
-def get_tasks(session: Session, project_id: int, user_id: int):
+def get_tasks(session: Session, project_id: int, user_id: int, status: TaskStatus = None):
     project = project_service.get_user_project(session, user_id, project_id)
-    tasks = session.query(Task).filter(Task.project_id == project.id).all()
+    if status is None:
+        tasks = session.query(Task).filter(Task.project_id == project.id).all()
+    else:
+        tasks = session.query(Task).filter(Task.project_id == project.id, Task.status == status).all()
     return tasks
 
 

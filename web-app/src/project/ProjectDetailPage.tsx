@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAuth } from "../auth/AuthContext";
 import { Link, useNavigate, useParams } from "react-router";
 import AlertDialog from "../shared/AlertDialog";
+import type { TaskStatus } from "../task/models";
 
 export default function ProjectDetailPage() {
     const [project, setProject] = useState<ProjectDetail | null>(null);
@@ -17,6 +18,7 @@ export default function ProjectDetailPage() {
     const { token } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
+    const [status, setStatus] = useState<TaskStatus>("TODO");
 
     useEffect(() => {
         const load = async () => {
@@ -72,6 +74,10 @@ export default function ProjectDetailPage() {
         remove();
     }
 
+    const handleStatusChange = (_event: React.MouseEvent<HTMLElement>, newStatus: TaskStatus) => {
+        setStatus(newStatus);
+    };
+
     if (loading) {
         return <Loading isLoading={loading} />
     }
@@ -90,8 +96,8 @@ export default function ProjectDetailPage() {
                     <Typography variant="h5">Tasks</Typography>
                     <Button variant="contained" endIcon={<AddIcon />} component={Link} to="task/new">Add task</Button>
                 </Stack>
-                <TaskStatusFilter />
-                <TaskList />
+                <TaskStatusFilter status={status} onChange={handleStatusChange} />
+                <TaskList status={status} />
             </Stack>
         </Stack>
     );

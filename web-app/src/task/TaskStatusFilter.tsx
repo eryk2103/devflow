@@ -1,18 +1,17 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useState } from "react";
+import type { TaskStatus } from "./models";
 
-export default function TaskStatusFilter() {
-    const [status, setStatus] = useState<string>("TODO");
+type Props = {
+    status: TaskStatus,
+    onChange: (_event: React.MouseEvent<HTMLElement>, newStatus: TaskStatus) => void;
+}
 
-    const handleAlignment = (_event: React.MouseEvent<HTMLElement>, newStatus: string) => {
-        setStatus(newStatus);
-    };
-
+export default function TaskStatusFilter({ status, onChange }: Props) {
     return (
         <ToggleButtonGroup
             value={status}
             exclusive
-            onChange={handleAlignment}
+            onChange={onChange}
             aria-label="status"
         >
             <ToggleButton value="TODO">TODO</ToggleButton>
