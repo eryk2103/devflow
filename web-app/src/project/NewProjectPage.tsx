@@ -3,23 +3,40 @@ import ProjectForm, { type ProjectFormData } from "./ProjectForm";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import Loading from "../core/Loading";
+import { useAuth } from "../auth/AuthContext";
 
 export default function NewProjectPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-
+    const { token } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (_data: ProjectFormData) => {
+    const handleSubmit = async (formData: ProjectFormData) => {
         setLoading(true);
         try {
-            await new Promise<void>((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, 1000)
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
             });
 
-            navigate("/");
+            const data = await res.json();
+
+            if (!res.ok) {
+                if (res.status === 409) {
+                    setError("Project with this name already exists.")
+                }
+                else {
+                    setError("Something went wrong. Try again later.");
+                }
+                return;
+            }
+
+            navigate(`/project/${data.id}`);
         }
         catch {
             setError("Something went wrong. Try again later.")
