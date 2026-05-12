@@ -1,6 +1,7 @@
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
+from app.core import config
 from app.core.db import engine, Base
 from app.core.exception_handlers import not_found_exception_handler, conflict_exception_handler
 from app.core.exceptions import NotFoundException, ConflictException
@@ -12,6 +13,18 @@ from app.features.users.router import users_router
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+origins = [
+    config.settings.web_app_url
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(projects_router, prefix="/api/projects", tags=["projects"])
