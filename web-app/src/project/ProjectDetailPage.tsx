@@ -1,27 +1,39 @@
 import { Alert, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { type ProjectDetail } from "./models";
-import { PROJECT_DATA } from "../data";
 import Loading from "../core/Loading";
 import PageHeader from "../shared/PageHeader";
 import TaskList from "../task/TaskList";
 import TaskStatusFilter from "../task/TaskStatusFilter";
 import AddIcon from '@mui/icons-material/Add';
+import { useAuth } from "../auth/AuthContext";
+import { useParams } from "react-router";
 
 export default function ProjectDetailPage() {
     const [project, setProject] = useState<ProjectDetail | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const { token } = useAuth();
+    const { id } = useParams();
 
     useEffect(() => {
         const load = async () => {
             try {
-                const data = await new Promise<ProjectDetail>((resolve) => {
-                    setTimeout(() => {
-                        resolve(PROJECT_DATA);
-                        //reject(new Error());
-                    }, 1000);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                 });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    setError("Something went wrong. Try again later");
+                }
+
                 setProject(data);
             } catch {
                 setError("Something went wrong. Try again later.");

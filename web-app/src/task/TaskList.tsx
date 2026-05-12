@@ -1,16 +1,62 @@
-import { Divider, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { CircularProgress, Divider, List, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Task } from "./models";
-import { Link } from "react-router";
-import { TASKS_DATA } from "../data";
+import { Link, useParams } from "react-router";
+import { useAuth } from "../auth/AuthContext";
+import Message from "../shared/Message";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const { id } = useParams();
+    const { token } = useAuth();
+    const [error, setError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        setTasks(TASKS_DATA);
+        const load = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks?project=${id}`, {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+
+                }
+                setTasks(data);
+            }
+            catch (err) {
+                setError(true);
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+        load();
     }, []);
+
+    if (error) {
+        return <Message value="Something went wrong. Try again later." />;
+    }
+
+    if (tasks.length === 0) {
+        return <Message value="No projects found." />;
+    }
+
+    if (loading) {
+        return (
+            <Stack sx={{ alignItems: "center" }}>
+                <CircularProgress color="inherit" sx={{ mt: 5 }} />
+            </Stack>
+        );
+    }
 
     return (
         <List>
