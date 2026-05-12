@@ -12,4 +12,4 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_ttl: int = 3600
 
-settings = Settings()
+settings = Settings() # type: ignore
