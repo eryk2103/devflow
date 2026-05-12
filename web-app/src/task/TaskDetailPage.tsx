@@ -6,6 +6,7 @@ import Loading from "../core/Loading";
 import { useAuth } from "../auth/AuthContext";
 import { Link, useNavigate, useParams } from "react-router";
 import AlertDialog from "../shared/AlertDialog";
+import StatusDialog from "./StatusDialog";
 
 const formatDate = (str: string) => {
     const date = new Date(str);
@@ -87,7 +88,7 @@ export default function TaskDetailPage() {
                     <Stack direction="row" spacing={1}>
                         <AlertDialog title="Delete task" text="Are you sure you want to delete this task?" onConfirmation={handleTaskDelete} />
                         <Button variant="outlined" color="primary" component={Link} to="edit">Edit</Button>
-                        <Button variant="outlined" color="secondary">Change status</Button>
+                        <StatusDialog taskId={task.id} currentStatus={task.status} onSuccess={(status) => setTask({ ...task, status })} />
                     </Stack>
                     <Stack>
                         <Typography variant="h5">Details</Typography>
