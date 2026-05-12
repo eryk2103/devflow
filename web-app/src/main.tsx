@@ -15,6 +15,9 @@ import NewProjectPage from './project/NewProjectPage';
 import LoginPage from './auth/LoginPage';
 import ProjectDetailPage from './project/ProjectDetailPage';
 import TaskDetailPage from './task/TaskDetailPage';
+import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './core/ProtectedRoute';
+import BasicLayout from './core/BasicLayout';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,17 +29,21 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route index element={<ProjectsPage />} />
-            <Route path="project/new" element={<NewProjectPage />} />
-            <Route path="project/:id" element={<ProjectDetailPage />} />
-            <Route path="project/:projectId/task/:taskId" element={<TaskDetailPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<BasicLayout />}>
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+              <Route index element={<ProjectsPage />} />
+              <Route path="project/new" element={<NewProjectPage />} />
+              <Route path="project/:id" element={<ProjectDetailPage />} />
+              <Route path="project/:projectId/task/:taskId" element={<TaskDetailPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
 )

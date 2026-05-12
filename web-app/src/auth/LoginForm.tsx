@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -12,14 +12,16 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 
 type Props = {
     onSubmit: (data: LoginFormData) => void;
+    error: string;
 }
 
-export default function LoginForm({ onSubmit }: Props) {
+export default function LoginForm({ onSubmit, error }: Props) {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
 
     return (
         <Stack spacing={4}>
             <Typography variant="h4">Sign in</Typography>
+            {error && <Alert severity="error">{error}</Alert>}
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <Stack spacing={3}>
                     <TextField type="email" label="Email" fullWidth autoComplete="email" {...register("email")} error={!!errors.email} helperText={errors?.email?.message} required />
