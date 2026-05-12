@@ -6,6 +6,7 @@ import { Link } from "react-router";
 
 export default function ProjectsPage() {
     const [search, setSearch] = useState<string>('');
+    const [projectsLoading, setProjectsLoading] = useState<boolean>(true);
 
     return (
         <Stack spacing={3}>
@@ -15,8 +16,8 @@ export default function ProjectsPage() {
                     New
                 </Button>
             </Stack>
-            <TextField label="Search" variant="outlined" onChange={(e) => setSearch(e.target.value)} />
-            <ProjectList search={search} />
+            <TextField label="Search" variant="outlined" onChange={(e) => setSearch(e.target.value)} disabled={projectsLoading} />
+            <ProjectList search={search} onLoadingFinish={() => setProjectsLoading(false)} />
         </Stack>
     );
 }
