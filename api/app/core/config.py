@@ -11,5 +11,6 @@ class Settings(BaseSettings):
     secret_key: SecretStr
     algorithm: str = "HS256"
     access_token_ttl: int = 3600
+    db_url: str = "postgresql://app:root@localhost:5432/app"
 
 settings = Settings() # type: ignore

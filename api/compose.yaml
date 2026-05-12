@@ -1,0 +1,20 @@
+services:
+  database:
+    image: postgres:18-alpine
+    container_name: devflow_database
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: app
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "app", "-U", "app" ]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
