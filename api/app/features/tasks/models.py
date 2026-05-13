@@ -42,4 +42,4 @@ class Task(Base):
     type: Mapped[TaskType] = mapped_column(Enum(TaskType), nullable=False)
     priority: Mapped[TaskPriority] = mapped_column(Enum(TaskPriority), nullable=False)
 
-    project: Mapped["Project"] = relationship(back_populates="tasks") # type: ignore
+    project: Mapped["Project"] = relationship(back_populates="tasks")  # type: ignore

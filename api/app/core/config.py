@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_ttl: int = 3600
     db_url: str = "postgresql://app:root@localhost:5432/app"
+    test_db_url: str = "postgresql://app:root@localhost:5433/test_app"
     web_app_url: str = "http://localhost:5173"
 
 settings = Settings() # type: ignore

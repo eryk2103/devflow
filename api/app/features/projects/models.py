@@ -13,7 +13,8 @@ class Project(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     description: Mapped[str] = mapped_column(String(250), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC),
+                                                 nullable=False)
 
-    user: Mapped["User"] = relationship(back_populates="projects") # type: ignore
-    tasks: Mapped[list["Task"]] = relationship(back_populates="project", cascade="all, delete-orphan") # type: ignore
+    user: Mapped["User"] = relationship(back_populates="projects")  # type: ignore
+    tasks: Mapped[list["Task"]] = relationship(back_populates="project", cascade="all, delete-orphan")  # type: ignore
