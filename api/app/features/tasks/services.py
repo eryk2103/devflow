@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
 from app.features.projects import services as project_service
-from .exceptions import TaskNotFoundException
+from .exceptions import TaskNotFoundException, TaskNameConflictException
 from .models import Task, TaskStatus
 from .schemas import TaskCreate, TaskUpdate, TaskPatch
 
@@ -26,9 +26,14 @@ def get_task_by_id(session: Session, task_id: int, user_id: int):
 
 
 def create_task(session: Session, task: TaskCreate, user_id: int):
+    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task.project_id).first()
+    if task_check:
+        raise TaskNameConflictException()
+
     project = project_service.get_user_project(session, user_id, task.project_id)
     new_task = Task(name=task.name, description=task.description, status=task.status, project_id=project.id,
                     priority=task.priority, type=task.type)
+
     session.add(new_task)
     session.commit()
     session.refresh(new_task)
@@ -38,6 +43,10 @@ def create_task(session: Session, task: TaskCreate, user_id: int):
 
 def update_task(session: Session, task_id: int, task: TaskUpdate, user_id: int):
     task_db = get_task_by_id(session, task_id, user_id)
+
+    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id).first()
+    if task_check:
+        raise TaskNameConflictException()
 
     task_db.name = task.name
     task_db.description = task.description
@@ -52,6 +61,10 @@ def update_task(session: Session, task_id: int, task: TaskUpdate, user_id: int):
 
 def partial_update_task(session: Session, task_id: int, task: TaskPatch, user_id: int):
     task_db = get_task_by_id(session, task_id, user_id)
+    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id).first()
+    if task_check:
+        raise TaskNameConflictException()
+
     for key, value in task.model_dump(exclude_unset=True).items():
         setattr(task_db, key, value)
 
