@@ -21,6 +21,7 @@ import BasicLayout from './core/BasicLayout';
 import NewTaskPage from './task/NewTaskPage';
 import UpdateProjectPage from './project/UpdateProjectPage';
 import UpdateTaskPage from './task/UpdateTaskPage';
+import RegisterPage from './auth/RegisterPage';
 
 const darkTheme = createTheme({
   palette: {
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route element={<BasicLayout />}>
               <Route path="login" element={<LoginPage />} />
+              <Route path="register" element={<RegisterPage />} />
             </Route>
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
               <Route index element={<ProjectsPage />} />

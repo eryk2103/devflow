@@ -6,6 +6,7 @@ type AuthContextType = {
     token: string | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    register: (email: string, password: string) => Promise<void>;
     logout: () => void;
     refresh: () => void;
 }
@@ -57,6 +58,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await getUser(data.access_token);
     }
 
+    const register = async (email: string, password: string) => {
+        const res = await fetch(`${import.meta.env.VITE_AUTH_PROVIDER_URL}/register`, {
+            method: "post",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!res.ok) {
+            if (res.status === 409) {
+                throw new Error("Email already in use.")
+            }
+            throw new Error("Something went wrong")
+        }
+    }
+
     const getUser = async (accessToken: string) => {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
             method: "get",
@@ -103,7 +123,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, logout, refresh }}>
+        <AuthContext.Provider value={{ user, token, loading, login, register, logout, refresh }}>
             {children}
         </AuthContext.Provider>
     )

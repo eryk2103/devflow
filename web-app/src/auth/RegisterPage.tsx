@@ -4,10 +4,11 @@ import LoginForm, { type LoginFormData } from "./LoginForm";
 import Loading from "../core/Loading";
 import { useNavigate } from "react-router";
 import { Link, Stack } from "@mui/material";
-import { Link as RouterLink } from "react-router";
+import { Link as RouterLink } from 'react-router';
+import RegisterForm from "./RegisterForm";
 
-export default function LoginPage() {
-    const { login } = useAuth();
+export default function RegisterPage() {
+    const { login, register } = useAuth();
     const [error, setError] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function LoginPage() {
     const handleLogin = async (data: LoginFormData) => {
         setLoading(true);
         try {
+            await register(data.email, data.password);
             await login(data.email, data.password);
             navigate("/");
         }
@@ -35,8 +37,8 @@ export default function LoginPage() {
         <Stack sx={{ alignItems: "center" }}>
             <Stack sx={{ width: { xs: "100%", sm: 500, md: 700 } }} spacing={3}>
                 <Loading isLoading={loading} />
-                <LoginForm onSubmit={handleLogin} error={error} />
-                <Link component={RouterLink} to="/register">Don't have an account? Sign up here.</Link>
+                <RegisterForm onSubmit={handleLogin} error={error} />
+                <Link component={RouterLink} to="/login">Already have an account? Sign in here.</Link>
             </Stack>
         </Stack >
     );
