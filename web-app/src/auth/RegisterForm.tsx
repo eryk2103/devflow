@@ -3,20 +3,20 @@ import { Alert, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
     email: z.email(),
     password: z.string().min(1, "Password is required.")
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export type RegisterFormData = z.infer<typeof registerSchema>;
 
 type Props = {
-    onSubmit: (data: LoginFormData) => void;
+    onSubmit: (data: RegisterFormData) => void;
     error: string;
 }
 
 export default function RegisterForm({ onSubmit, error }: Props) {
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) });
 
     return (
         <Stack spacing={4}>
