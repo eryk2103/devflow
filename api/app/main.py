@@ -14,9 +14,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = [
-    config.settings.web_app_url
-]
+origins = config.settings.cors_origins
 
 app.add_middleware(
     CORSMiddleware,
