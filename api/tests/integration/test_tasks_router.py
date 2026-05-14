@@ -37,6 +37,7 @@ def seed_task_2(db_session, seed_project_2):
 
     return task
 
+
 # Same project owner, different name
 @pytest.fixture()
 def seed_task_3(db_session, seed_project):
@@ -169,6 +170,24 @@ def test_update_task(client, req_headers, seed_task):
     assert data["priority"] == update_task.priority.value
 
 
+def test_update_task_without_name_change(client, req_headers, seed_task):
+    update_task = TaskUpdate(name=seed_task.name, description="This is an updated task", status=TaskStatus.DONE,
+                             type=TaskType.BUG, priority=TaskPriority.HIGH)
+
+    response = client.put(f"/api/tasks/{seed_task.id}", json=update_task.model_dump(), headers=req_headers)
+
+    data = response.json()
+
+    assert response.status_code == 200
+
+    assert data["id"] == seed_task.id
+    assert data["name"] == update_task.name
+    assert data["description"] == update_task.description
+    assert data["status"] == update_task.status.value
+    assert data["type"] == update_task.type.value
+    assert data["priority"] == update_task.priority.value
+
+
 def test_update_task_not_found(client, req_headers):
     update_task = TaskUpdate(name="Updated Task", description="This is an updated task", status=TaskStatus.DONE,
                              type=TaskType.BUG, priority=TaskPriority.HIGH)
@@ -202,6 +221,21 @@ def test_partial_update_task(client, req_headers, seed_task):
 
     assert data["id"] == seed_task.id
     assert data["name"] == "Patched Task"
+    assert data["description"] == seed_task.description
+    assert data["status"] == seed_task.status.value
+    assert data["type"] == seed_task.type.value
+    assert data["priority"] == seed_task.priority.value
+
+
+def test_partial_update_task_without_name_change(client, req_headers, seed_task):
+    response = client.patch(f"/api/tasks/{seed_task.id}", json={"name": seed_task.name}, headers=req_headers)
+
+    data = response.json()
+
+    assert response.status_code == 200
+
+    assert data["id"] == seed_task.id
+    assert data["name"] == seed_task.name
     assert data["description"] == seed_task.description
     assert data["status"] == seed_task.status.value
     assert data["type"] == seed_task.type.value

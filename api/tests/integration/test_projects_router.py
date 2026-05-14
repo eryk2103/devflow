@@ -91,8 +91,20 @@ def test_update_project(client, seed_project, req_headers):
     assert response.status_code == 200
 
     assert data["id"] == seed_project.id
-    assert data["name"] == "Updated Project"
-    assert data["description"] == "This is an updated project"
+    assert data["name"] == update_project.name
+    assert data["description"] == update_project.description
+
+
+def test_update_project_without_name_change(client, seed_project, req_headers):
+    update_project = ProjectUpdate(name=seed_project.name, description="This is an updated project")
+    response = client.put(f"/api/projects/{seed_project.id}", json=update_project.model_dump(), headers=req_headers)
+
+    data = response.json()
+    assert response.status_code == 200
+
+    assert data["id"] == seed_project.id
+    assert data["name"] == update_project.name
+    assert data["description"] == update_project.description
 
 
 def test_update_project_not_found(client, req_headers):
@@ -117,6 +129,16 @@ def test_partial_update_project(client, seed_project, req_headers):
     assert data["name"] == "Patched Project"
     assert data["description"] == seed_project.description
 
+
+def test_partial_update_project_without_name_change(client, seed_project, req_headers):
+    response = client.patch(f"/api/projects/{seed_project.id}", json={"name": seed_project.name}, headers=req_headers)
+
+    data = response.json()
+    assert response.status_code == 200
+
+    assert data["id"] == seed_project.id
+    assert data["name"] == seed_project.name
+    assert data["description"] == seed_project.description
 
 def test_partial_update_project_not_found(client, req_headers):
     response = client.patch(f"/api/projects/999999", json={"name": "Patched Project"}, headers=req_headers)
