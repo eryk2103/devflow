@@ -3,7 +3,7 @@ import { useAuth } from "./AuthContext";
 import LoginForm, { type LoginFormData } from "./LoginForm";
 import Loading from "../core/Loading";
 import { useNavigate } from "react-router";
-import { Button, Divider, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
 export default function LoginPage() {
     const { login } = useAuth();
