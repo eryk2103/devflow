@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     secret_key: SecretStr
     algorithm: str = "HS256"
     access_token_ttl: int = 3600
+    refresh_token_ttl: int = 3600 * 24 * 7
     db_url: str
     test_db_url: str
     cors_origins: list[str]

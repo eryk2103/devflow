@@ -16,3 +16,4 @@ class User(Base):
                                                  nullable=False)
 
     projects: Mapped[list["Project"]] = relationship(back_populates="user")  # type: ignore
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(back_populates="user")  # type: ignore
