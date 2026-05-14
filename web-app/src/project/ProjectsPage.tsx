@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ProjectList from "./ProjectList";
 import { useState } from "react";
