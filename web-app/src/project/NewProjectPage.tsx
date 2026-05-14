@@ -47,9 +47,11 @@ export default function NewProjectPage() {
     }
 
     return (
-        <Stack>
-            <Loading isLoading={loading} />
-            <ProjectForm onSubmit={handleSubmit} title="New project" onCancelNavigate="/" error={error} />
+        <Stack sx={{ alignItems: { md: "center" } }}>
+            <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
+                <Loading isLoading={loading} />
+                <ProjectForm onSubmit={handleSubmit} title="New project" onCancelNavigate="/" error={error} />
+            </Stack>
         </Stack>
     );
 }

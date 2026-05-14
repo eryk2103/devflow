@@ -3,7 +3,7 @@ import { useAuth } from "./AuthContext";
 import LoginForm, { type LoginFormData } from "./LoginForm";
 import Loading from "../core/Loading";
 import { useNavigate } from "react-router";
-import { Button } from "@mui/material";
+import { Button, Divider, Stack } from "@mui/material";
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -36,10 +36,15 @@ export default function LoginPage() {
     }
 
     return (
-        <>
-            <Loading isLoading={loading} />
-            <LoginForm onSubmit={handleLogin} error={error} />
-            <Button variant="outlined" sx={{ mt: 5 }} onClick={handleDemoClick}>Log in as demo user</Button>
-        </>
+        <Stack sx={{ alignItems: "center" }}>
+            <Stack sx={{ width: { xs: "100%", sm: 500, md: 700 } }} >
+                <Loading isLoading={loading} />
+                <LoginForm onSubmit={handleLogin} error={error} />
+                <Divider sx={{ my: 3 }} />
+                <Stack sx={{ alignItems: { md: "center" } }}>
+                    <Button variant="outlined" sx={{ width: { md: 200 } }} onClick={handleDemoClick}>Log in as demo user</Button>
+                </Stack>
+            </Stack>
+        </Stack >
     );
 }

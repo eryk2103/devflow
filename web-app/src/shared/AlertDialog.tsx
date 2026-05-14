@@ -33,6 +33,7 @@ export default function AlertDialog({ title, text, onConfirmation }: { title: st
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         role="alertdialog"
+        slotProps={{ paper: { sx: { mt: 20, alignSelf: "flex-start" } } }}
       >
         <DialogTitle id="alert-dialog-title">
           {title}
@@ -49,6 +50,6 @@ export default function AlertDialog({ title, text, onConfirmation }: { title: st
           <Button onClick={handleConfiramtion}>Delete</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </React.Fragment >
   );
 }

@@ -1,4 +1,4 @@
-import { Alert, Button, Stack, Typography } from "@mui/material";
+import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { type ProjectDetail } from "./models";
 import Loading from "../core/Loading";
@@ -83,21 +83,24 @@ export default function ProjectDetailPage() {
     }
 
     return (
-        <Stack spacing={3}>
-            {error && <Alert severity="error">{error}</Alert>}
-            <PageHeader title={project?.name || ''} path="/" />
-            <Typography variant="body1">{project?.description}</Typography>
-            <Stack direction="row" spacing={3}>
-                <AlertDialog title="Delete project" text="Are you sure you want to delete this project?" onConfirmation={deleteProject} />
-                <Button variant="outlined" color="info" component={Link} to={`/project/${id}/edit`}>Edit</Button>
-            </Stack>
-            <Stack spacing={2}>
-                <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-                    <Typography variant="h5">Tasks</Typography>
-                    <Button variant="contained" endIcon={<AddIcon />} component={Link} to="task/new">Add task</Button>
+        <Stack sx={{ alignItems: { md: "center" } }}>
+            <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
+                {error && <Alert severity="error">{error}</Alert>}
+                <PageHeader title={project?.name || ''} path="/" />
+                <Typography variant="body1">{project?.description}</Typography>
+                <Stack direction="row" spacing={3}>
+                    <AlertDialog title="Delete project" text="Are you sure you want to delete this project?" onConfirmation={deleteProject} />
+                    <Button variant="outlined" color="info" component={Link} to={`/project/${id}/edit`}>Edit</Button>
                 </Stack>
-                <TaskStatusFilter status={status} onChange={handleStatusChange} />
-                <TaskList status={status} />
+                <Divider />
+                <Stack spacing={2}>
+                    <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                        <Typography variant="h5">Tasks</Typography>
+                        <Button variant="contained" endIcon={<AddIcon />} component={Link} to="task/new">Add task</Button>
+                    </Stack>
+                    <TaskStatusFilter status={status} onChange={handleStatusChange} />
+                    <TaskList status={status} />
+                </Stack>
             </Stack>
         </Stack>
     );

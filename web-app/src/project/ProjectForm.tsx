@@ -38,9 +38,9 @@ export default function ProjectForm({ onSubmit, title, onCancelNavigate, error, 
                 <Stack spacing={3}>
                     <TextField fullWidth variant="outlined" label="Name" required {...register("name")} error={!!errors.name} helperText={errors?.name?.message} />
                     <TextField multiline rows={7} fullWidth variant="outlined" label="Description" {...register("description")} error={!!errors.description} helperText={errors?.description?.message} />
-                    <Stack spacing={3}>
-                        <Button type="submit" variant="contained" fullWidth>Submit</Button>
-                        <Button type="button" variant="outlined" fullWidth component={Link} to={onCancelNavigate}>Cancel</Button>
+                    <Stack sx={{ flexDirection: { md: "row-reverse" }, justifyContent: { md: "flex-end" }, gap: 3 }}>
+                        <Button type="submit" variant="contained" fullWidth sx={{ width: { md: 150 } }}>Submit</Button>
+                        <Button type="button" variant="outlined" fullWidth component={Link} to={onCancelNavigate} sx={{ width: { md: 150 } }}>Cancel</Button>
                     </Stack>
                 </Stack>
             </form>

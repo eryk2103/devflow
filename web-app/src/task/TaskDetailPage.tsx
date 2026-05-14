@@ -90,34 +90,37 @@ export default function TaskDetailPage() {
                         <Button variant="outlined" color="primary" component={Link} to="edit">Edit</Button>
                         <StatusDialog taskId={task.id} currentStatus={task.status} onSuccess={(status) => setTask({ ...task, status })} />
                     </Stack>
-                    <Stack>
-                        <Typography variant="h5">Details</Typography>
-                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                            <Typography variant="body1">Status</Typography>
-                            <Typography variant="body1">{task.status}</Typography>
+                    <Divider />
+                    <Stack sx={{ flexDirection: { md: "row" }, gap: 3 }}>
+                        <Stack sx={{ width: { sx: "100%", md: 700 } }} >
+                            <Typography variant="h5">Details</Typography>
+                            <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                                <Typography variant="body1">Status</Typography>
+                                <Typography variant="body1">{task.status}</Typography>
+                            </Stack>
+                            <Divider />
+                            <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                                <Typography variant="body1">Priority</Typography>
+                                <Typography variant="body1">{task.priority}</Typography>
+                            </Stack>
+                            <Divider />
+                            <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                                <Typography variant="body1">Type</Typography>
+                                <Typography variant="body1">{task.type}</Typography>
+                            </Stack>
+                            <Divider />
+                            <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
+                                <Typography variant="body1">Created at</Typography>
+                                <Typography variant="body1">{formatDate(task.createdAt)}</Typography>
+                            </Stack>
                         </Stack>
-                        <Divider />
-                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                            <Typography variant="body1">Priority</Typography>
-                            <Typography variant="body1">{task.priority}</Typography>
+                        <Stack sx={{ width: "100%" }}>
+                            <Typography variant="h5">Description</Typography>
+                            <Typography variant="body1">{task.description}</Typography>
                         </Stack>
-                        <Divider />
-                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                            <Typography variant="body1">Type</Typography>
-                            <Typography variant="body1">{task.type}</Typography>
-                        </Stack>
-                        <Divider />
-                        <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
-                            <Typography variant="body1">Created at</Typography>
-                            <Typography variant="body1">{formatDate(task.createdAt)}</Typography>
-                        </Stack>
-                    </Stack>
-                    <Stack>
-                        <Typography variant="h5">Description</Typography>
-                        <Typography variant="body1">{task.description}</Typography>
                     </Stack>
                 </>
             }
-        </Stack>
+        </Stack >
     );
 }

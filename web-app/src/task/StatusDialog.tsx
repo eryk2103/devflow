@@ -64,6 +64,8 @@ export default function StatusDialog({ taskId, currentStatus, onSuccess }: { tas
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 role="alertdialog"
+                slotProps={{ paper: { sx: { mt: 20, alignSelf: "flex-start" } } }}
+                fullWidth
             >
                 <DialogTitle id="alert-dialog-title">
                     Change task status

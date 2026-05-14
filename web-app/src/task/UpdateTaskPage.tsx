@@ -67,7 +67,7 @@ export default function UpdateTaskPage() {
                 return;
             }
 
-            navigate(`/project/${projectId}`);
+            navigate(`/project/${projectId}/task/${taskId}`);
         }
         catch {
             setError("Something went wrong. Try again later.")
@@ -82,8 +82,10 @@ export default function UpdateTaskPage() {
     }
 
     return (
-        <Stack>
-            <TaskForm onSubmit={handleSubmit} title="Update task" onCancelNavigate={`/project/${projectId}`} error={error} task={task} />
+        <Stack sx={{ alignItems: { md: "center" } }}>
+            <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
+                <TaskForm onSubmit={handleSubmit} title="Update task" onCancelNavigate={`/project/${projectId}/task/${taskId}`} error={error} task={task} />
+            </Stack>
         </Stack>
     );
 }

@@ -46,9 +46,11 @@ export default function NewTaskPage() {
     }
 
     return (
-        <Stack>
-            <Loading isLoading={loading} />
-            <TaskForm onSubmit={handleSubmit} title="New task" onCancelNavigate={`/project/${projectId}`} error={error} />
+        <Stack sx={{ alignItems: { md: "center" } }}>
+            <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
+                <Loading isLoading={loading} />
+                <TaskForm onSubmit={handleSubmit} title="New task" onCancelNavigate={`/project/${projectId}`} error={error} />
+            </Stack>
         </Stack>
     );
 }

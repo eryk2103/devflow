@@ -26,7 +26,7 @@ export default function LoginForm({ onSubmit, error }: Props) {
                 <Stack spacing={3}>
                     <TextField type="email" label="Email" fullWidth autoComplete="email" {...register("email")} error={!!errors.email} helperText={errors?.email?.message} required />
                     <TextField type="password" label="Password" fullWidth autoComplete="current-password" {...register("password")} error={!!errors.password} helperText={errors?.password?.message} required />
-                    <Button type="submit" variant="contained" size="large">Sign in</Button>
+                    <Button type="submit" variant="contained" size="large" sx={{ width: { md: 100 } }}>Sign in</Button>
                 </Stack>
             </form>
         </Stack>

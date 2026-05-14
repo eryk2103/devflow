@@ -78,9 +78,11 @@ export default function UpdateProjectPage() {
     }
 
     return (
-        <Stack>
-            <Loading isLoading={loading} />
-            {!loading && <ProjectForm onSubmit={handleSubmit} title="Update project" onCancelNavigate="/" error={error} project={project} />}
+        <Stack sx={{ alignItems: { md: "center" } }}>
+            <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
+                <Loading isLoading={loading} />
+                {!loading && <ProjectForm onSubmit={handleSubmit} title="Update project" onCancelNavigate="/" error={error} project={project} />}
+            </Stack>
         </Stack>
     );
 }

@@ -112,9 +112,9 @@ export default function TaskForm({ onSubmit, title, onCancelNavigate, error, tas
                             />
                         </FormControl>
                     </Box>
-                    <Stack spacing={3}>
-                        <Button type="submit" variant="contained" fullWidth>Submit</Button>
-                        <Button type="button" variant="outlined" fullWidth component={Link} to={onCancelNavigate}>Cancel</Button>
+                    <Stack sx={{ flexDirection: { md: "row-reverse" }, justifyContent: { md: "flex-end" }, gap: 3 }}>
+                        <Button type="submit" variant="contained" fullWidth sx={{ width: { md: 150 } }}>Submit</Button>
+                        <Button type="button" variant="outlined" fullWidth component={Link} to={onCancelNavigate} sx={{ width: { md: 150 } }}>Cancel</Button>
                     </Stack>
                 </Stack>
             </form>
