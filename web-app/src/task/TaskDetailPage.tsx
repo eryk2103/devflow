@@ -24,7 +24,7 @@ export default function TaskDetailPage() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetchApi(`/tasks/${taskId}`, {
+                const res = await fetchApi(`tasks/${taskId}`, {
                     method: "GET",
                 });
 

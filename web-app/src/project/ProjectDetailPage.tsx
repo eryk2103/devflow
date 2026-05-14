@@ -24,11 +24,7 @@ export default function ProjectDetailPage() {
         const load = async () => {
             try {
                 const res = await fetchApi(`projects/${id}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                    },
+                    method: "GET"
                 });
 
                 const data = await res.json();

@@ -30,20 +30,11 @@ export default function LoginPage() {
         }
     };
 
-    const handleDemoClick = () => {
-        const data: LoginFormData = { email: "user3@example.com", password: "stringst" };
-        handleLogin(data);
-    }
-
     return (
         <Stack sx={{ alignItems: "center" }}>
             <Stack sx={{ width: { xs: "100%", sm: 500, md: 700 } }} >
                 <Loading isLoading={loading} />
                 <LoginForm onSubmit={handleLogin} error={error} />
-                <Divider sx={{ my: 3 }} />
-                <Stack sx={{ alignItems: { md: "center" } }}>
-                    <Button variant="outlined" sx={{ width: { md: 200 } }} onClick={handleDemoClick}>Log in as demo user</Button>
-                </Stack>
             </Stack>
         </Stack >
     );

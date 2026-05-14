@@ -19,9 +19,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const loadUser = async () => {
-            const newToken = await refresh();
-            await getUser(newToken);
-            setLoading(false);
+            try {
+                const newToken = await refresh();
+                await getUser(newToken);
+            }
+            catch {
+                logout();
+            }
+            finally {
+                setLoading(false);
+            }
         }
         loadUser();
     }, []);
