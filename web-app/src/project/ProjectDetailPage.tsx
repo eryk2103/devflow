@@ -75,7 +75,9 @@ export default function ProjectDetailPage() {
     }
 
     const handleStatusChange = (_event: React.MouseEvent<HTMLElement>, newStatus: TaskStatus) => {
-        setStatus(newStatus);
+        if (newStatus) {
+            setStatus(newStatus);
+        }
     };
 
     if (loading) {

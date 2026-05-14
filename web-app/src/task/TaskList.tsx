@@ -15,6 +15,8 @@ export default function TaskList({ status }: { status: string }) {
 
     useEffect(() => {
         const load = async () => {
+            setLoading(true);
+            setError(false);
             try {
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks?project=${id}&status=${status}`, {
                     method: "get",
@@ -28,7 +30,7 @@ export default function TaskList({ status }: { status: string }) {
                 const data = await res.json();
 
                 if (!res.ok) {
-
+                    setError(true)
                 }
                 setTasks(data);
             }

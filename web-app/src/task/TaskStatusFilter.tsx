@@ -14,9 +14,9 @@ export default function TaskStatusFilter({ status, onChange }: Props) {
             onChange={onChange}
             aria-label="status"
         >
-            <ToggleButton value="TODO">TODO</ToggleButton>
-            <ToggleButton value="IN_PROGRESS">IN PROGRESS</ToggleButton>
-            <ToggleButton value="DONE">DONE</ToggleButton>
+            <ToggleButton value="TODO" disabled={status === "TODO"}>TODO</ToggleButton>
+            <ToggleButton value="IN_PROGRESS" disabled={status === "IN_PROGRESS"}>IN PROGRESS</ToggleButton>
+            <ToggleButton value="DONE" disabled={status === "DONE"}>DONE</ToggleButton>
 
         </ToggleButtonGroup>
     );
