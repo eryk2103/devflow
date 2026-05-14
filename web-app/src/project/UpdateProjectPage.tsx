@@ -3,28 +3,23 @@ import ProjectForm, { type ProjectFormData } from "./ProjectForm";
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import Loading from "../core/Loading";
-import { useAuth } from "../auth/AuthContext";
 import { type ProjectDetail } from "./models";
+import useApiFetch from "../core/useApiFetch";
 
 export default function UpdateProjectPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const { token } = useAuth();
     const navigate = useNavigate();
     const [project, setProject] = useState<ProjectDetail | null>(null);
     const { id } = useParams();
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         setLoading(true);
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi(`projects/${id}`, {
+                    method: "GET"
                 });
 
                 const data = await res.json();
@@ -47,13 +42,8 @@ export default function UpdateProjectPage() {
     const handleSubmit = async (formData: ProjectFormData) => {
         setLoading(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+            const res = await fetchApi(`projects/${id}`, {
+                method: "PUT",
                 body: JSON.stringify(formData)
             });
 

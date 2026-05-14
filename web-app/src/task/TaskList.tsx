@@ -3,28 +3,23 @@ import { Fragment, useEffect, useState } from "react";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Task } from "./models";
 import { Link, useParams } from "react-router";
-import { useAuth } from "../auth/AuthContext";
 import Message from "../shared/Message";
+import useApiFetch from "../core/useApiFetch";
 
 export default function TaskList({ status }: { status: string }) {
     const [tasks, setTasks] = useState<Task[]>([]);
     const { id } = useParams();
-    const { token } = useAuth();
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         const load = async () => {
             setLoading(true);
             setError(false);
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks?project=${id}&status=${status}`, {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi(`tasks?project=${id}&status=${status}`, {
+                    method: "GET"
                 });
 
                 const data = await res.json();

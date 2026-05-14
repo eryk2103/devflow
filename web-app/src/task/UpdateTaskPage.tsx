@@ -2,29 +2,24 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import Loading from "../core/Loading";
-import { useAuth } from "../auth/AuthContext";
 import TaskForm, { type TaskFormData } from "./TaskForm";
 import type { Task } from "./models";
+import useApiFetch from "../core/useApiFetch";
 
 export default function UpdateTaskPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const { token } = useAuth();
     const navigate = useNavigate();
     const { projectId, taskId } = useParams();
     const [task, setTask] = useState<Task | null>(null);
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         setLoading(true);
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi(`tasks/${taskId}`, {
+                    method: "GET"
                 });
 
                 const data = await res.json();
@@ -47,13 +42,8 @@ export default function UpdateTaskPage() {
     const handleSubmit = async (formData: TaskFormData) => {
         setLoading(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+            const res = await fetchApi(`tasks/${taskId}`, {
+                method: "PUT",
                 body: JSON.stringify({ ...formData })
             });
 

@@ -2,26 +2,21 @@ import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import Loading from "../core/Loading";
-import { useAuth } from "../auth/AuthContext";
 import TaskForm, { type TaskFormData } from "./TaskForm";
+import useApiFetch from "../core/useApiFetch";
 
 export default function NewTaskPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const { token } = useAuth();
     const navigate = useNavigate();
     const { projectId } = useParams();
+    const { fetchApi } = useApiFetch();
 
     const handleSubmit = async (formData: TaskFormData) => {
         setLoading(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+            const res = await fetchApi(`tasks`, {
+                method: "POST",
                 body: JSON.stringify({ ...formData, project_id: projectId })
             });
 
