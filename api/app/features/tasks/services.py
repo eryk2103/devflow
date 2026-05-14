@@ -44,7 +44,8 @@ def create_task(session: Session, task: TaskCreate, user_id: int):
 def update_task(session: Session, task_id: int, task: TaskUpdate, user_id: int):
     task_db = get_task_by_id(session, task_id, user_id)
 
-    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id).first()
+    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id,
+                                            Task.id != task_db.id).first()
     if task_check:
         raise TaskNameConflictException()
 
@@ -61,7 +62,8 @@ def update_task(session: Session, task_id: int, task: TaskUpdate, user_id: int):
 
 def partial_update_task(session: Session, task_id: int, task: TaskPatch, user_id: int):
     task_db = get_task_by_id(session, task_id, user_id)
-    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id).first()
+    task_check = session.query(Task).filter(Task.name == task.name, Task.project_id == task_db.project_id,
+                                            Task.id != task_db.id).first()
     if task_check:
         raise TaskNameConflictException()
 
