@@ -4,8 +4,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useEffect, useState } from "react";
 import type { Project } from "./models";
 import { Link } from "react-router";
-import { useAuth } from "../auth/AuthContext";
 import Message from "../shared/Message";
+import useApiFetch from "../core/useApiFetch";
 
 type Props = {
     search?: string;
@@ -17,18 +17,13 @@ export default function ProjectList({ search, onLoadingFinish }: Props) {
     const [initial, setInitial] = useState<Project[]>([]);
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
-    const { token } = useAuth();
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi('projects', {
+                    method: "GET"
                 });
 
                 const data = await res.json();

@@ -14,3 +14,12 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class TokenList(BaseModel):
+    access_token: Token
+    refresh_token: str
+
+
+class RefreshTokenCookies(BaseModel):
+    refresh_token: str

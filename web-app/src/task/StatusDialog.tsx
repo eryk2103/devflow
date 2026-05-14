@@ -6,14 +6,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Alert, CircularProgress, FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { statuses, type TaskStatus } from './models';
 import { Fragment, useState } from 'react';
-import { useAuth } from '../auth/AuthContext';
+import useApiFetch from '../core/useApiFetch';
 
 export default function StatusDialog({ taskId, currentStatus, onSuccess }: { taskId: number, currentStatus: TaskStatus, onSuccess: (status: TaskStatus) => void }) {
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState<TaskStatus>(currentStatus);
-    const { token } = useAuth();
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const { fetchApi } = useApiFetch();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,13 +27,8 @@ export default function StatusDialog({ taskId, currentStatus, onSuccess }: { tas
         setError("");
         setLoading(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+            const res = await fetchApi(`tasks/${taskId}`, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
                 body: JSON.stringify({ status })
             });
 

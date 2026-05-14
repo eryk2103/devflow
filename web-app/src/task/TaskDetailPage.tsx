@@ -3,10 +3,10 @@ import PageHeader from "../shared/PageHeader";
 import { useEffect, useState } from "react";
 import { type Task } from "./models";
 import Loading from "../core/Loading";
-import { useAuth } from "../auth/AuthContext";
 import { Link, useNavigate, useParams } from "react-router";
 import AlertDialog from "../shared/AlertDialog";
 import StatusDialog from "./StatusDialog";
+import useApiFetch from "../core/useApiFetch";
 
 const formatDate = (str: string) => {
     const date = new Date(str);
@@ -17,20 +17,15 @@ export default function TaskDetailPage() {
     const [task, setTask] = useState<Task | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { token } = useAuth();
     const { taskId, projectId } = useParams();
     const navigate = useNavigate();
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi(`/tasks/${taskId}`, {
+                    method: "GET",
                 });
 
                 const data = await res.json();
@@ -53,13 +48,8 @@ export default function TaskDetailPage() {
 
     const handleTaskDelete = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
-                method: "delete",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+            const res = await fetch(`tasks/${taskId}`, {
+                method: "DELETE"
             });
 
             if (!res.ok) {

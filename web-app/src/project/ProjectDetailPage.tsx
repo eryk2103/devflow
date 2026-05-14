@@ -6,29 +6,28 @@ import PageHeader from "../shared/PageHeader";
 import TaskList from "../task/TaskList";
 import TaskStatusFilter from "../task/TaskStatusFilter";
 import AddIcon from '@mui/icons-material/Add';
-import { useAuth } from "../auth/AuthContext";
 import { Link, useNavigate, useParams } from "react-router";
 import AlertDialog from "../shared/AlertDialog";
 import type { TaskStatus } from "../task/models";
+import useApiFetch from "../core/useApiFetch";
 
 export default function ProjectDetailPage() {
     const [project, setProject] = useState<ProjectDetail | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const { token } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
     const [status, setStatus] = useState<TaskStatus>("TODO");
+    const { fetchApi } = useApiFetch();
 
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
-                    method: "get",
+                const res = await fetchApi(`projects/${id}`, {
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
                     },
                 });
 
@@ -52,13 +51,8 @@ export default function ProjectDetailPage() {
     const deleteProject = () => {
         const remove = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
-                    method: "delete",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
+                const res = await fetchApi(`projects/${id}`, {
+                    method: "DELETE"
                 });
 
                 if (!res.ok) {
