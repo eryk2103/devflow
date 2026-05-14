@@ -10,6 +10,11 @@ from app.features.projects.router import projects_router
 from app.features.tasks.router import tasks_router
 from app.features.users.router import users_router
 
+from app.features.users.models import User # noqa
+from app.features.auth.models import RefreshToken # noqa
+from app.features.tasks.models import Task # noqa
+from app.features.projects.models import Project # noqa
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()

@@ -1,4 +1,4 @@
-from app.core.exceptions import ConflictException, NotFoundException
+from app.core.exceptions import ConflictException
 
 
 class AccountConflictException(ConflictException):

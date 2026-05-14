@@ -2,7 +2,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Cookie, Response
 from fastapi.security import OAuth2PasswordRequestForm
-from jwt import InvalidTokenError
 from sqlalchemy.orm import Session
 from starlette import status
 
