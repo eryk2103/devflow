@@ -2,20 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core import config
-from app.core.db import engine, Base
 from app.core.exception_handlers import not_found_exception_handler, conflict_exception_handler
 from app.core.exceptions import NotFoundException, ConflictException
 from app.features.auth.router import auth_router
 from app.features.projects.router import projects_router
 from app.features.tasks.router import tasks_router
 from app.features.users.router import users_router
-
-from app.features.users.models import User # noqa
-from app.features.auth.models import RefreshToken # noqa
-from app.features.tasks.models import Task # noqa
-from app.features.projects.models import Project # noqa
-
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
