@@ -24,7 +24,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
             headers={"WWW-Authenticate": "Bearer"},
         )
     refresh_token = create_refresh_token(db, user)
-    response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, samesite="lax", secure=False)
+    response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, samesite="lax", secure=True)
     return create_access_token(user)
 
 
@@ -43,7 +43,7 @@ def refresh(response: Response, cookies: Annotated[RefreshTokenCookies, Cookie()
     except RefreshTokenExpiredException:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token expired")
 
-    response.set_cookie(key="refresh_token", value=new_tokens.refresh_token, httponly=True, samesite="lax", secure=False)
+    response.set_cookie(key="refresh_token", value=new_tokens.refresh_token, httponly=True, samesite="lax", secure=True)
     return new_tokens.access_token
 
 
