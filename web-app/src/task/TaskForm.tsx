@@ -8,7 +8,7 @@ import { priorities, statuses, types, type Task } from "./models";
 
 const taskSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long.").max(100, "Name must be 100 characters or less"),
-    description: z.string().min(3, "Description must be at least 3 characters long or empty.").max(500, "Description must be 500 characters or less"),
+    description: z.string().min(3, "Description must be at least 3 characters long or empty.").max(500, "Description must be 500 characters or less").optional().or(z.literal("")),
     type: z.string(),
     status: z.string(),
     priority: z.string(),

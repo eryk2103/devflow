@@ -8,7 +8,7 @@ from app.features.tasks.models import TaskStatus, TaskType, TaskPriority
 
 class TaskBase(BaseModel):
     name: str = Field(min_length=3, max_length=100)
-    description: str = Field(min_length=3, max_length=1000)
+    description: str = Field(max_length=1000)
     status: TaskStatus
     type: TaskType
     priority: TaskPriority

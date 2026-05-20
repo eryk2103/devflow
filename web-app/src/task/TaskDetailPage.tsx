@@ -106,7 +106,10 @@ export default function TaskDetailPage() {
                         </Stack>
                         <Stack sx={{ width: "100%" }}>
                             <Typography variant="h5">Description</Typography>
-                            <Typography variant="body1">{task.description}</Typography>
+                            {task.description ?
+                                <Typography variant="body1">{task.description}</Typography> :
+                                <Typography variant="body1" sx={{ textAlign: "center", mt: 5 }}>No description</Typography>
+                            }
                         </Stack>
                     </Stack>
                 </>
