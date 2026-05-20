@@ -52,7 +52,7 @@ export default function TaskList({ status }: { status: string }) {
     }
 
     if (tasks.length === 0) {
-        return <Message value="No projects found." />;
+        return <Message value="No tasks found." />;
     }
 
     return (
