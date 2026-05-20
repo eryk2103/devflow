@@ -15,5 +15,5 @@ export type Task = {
     type: TaskType;
     priority: TaskPriority;
     description: string;
-    createdAt: string;
+    created_at: string;
 }

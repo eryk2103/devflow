@@ -5,6 +5,8 @@ import type { Task } from "./models";
 import { Link, useParams } from "react-router";
 import Message from "../shared/Message";
 import useApiFetch from "../core/useApiFetch";
+import { TaskPriorityText } from "./TaskPriorityText";
+import { TaskCreatedAgo } from "./TaskCreatedAgo";
 
 export default function TaskList({ status }: { status: string }) {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -60,7 +62,12 @@ export default function TaskList({ status }: { status: string }) {
             {tasks.map(task =>
                 <Fragment key={task.id}>
                     <ListItemButton component={Link} to={`task/${task.id}`}>
-                        <ListItemText primary={task.name} />
+                        <ListItemText primary={task.name} secondary={
+                            <Stack sx={{ flexDirection: "row", gap: 1 }}>
+                                <TaskPriorityText priority={task.priority} />
+                                -
+                                <TaskCreatedAgo datetime={task.created_at} />
+                            </Stack>} />
                         <ListItemIcon sx={{ justifyContent: 'end' }}>
                             <ChevronRightIcon />
                         </ListItemIcon>

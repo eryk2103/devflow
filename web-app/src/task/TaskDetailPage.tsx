@@ -34,7 +34,7 @@ export default function TaskDetailPage() {
                     setError("Something went wrong. Try again later");
                 }
 
-                setTask({ ...data, createdAt: data.created_at });
+                setTask(data);
             }
             catch {
                 setError("Something went wrong. Try again later.")
@@ -101,7 +101,7 @@ export default function TaskDetailPage() {
                             <Divider />
                             <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
                                 <Typography variant="body1">Created at</Typography>
-                                <Typography variant="body1">{formatDate(task.createdAt)}</Typography>
+                                <Typography variant="body1">{formatDate(task.created_at)}</Typography>
                             </Stack>
                         </Stack>
                         <Stack>
