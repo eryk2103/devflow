@@ -48,7 +48,7 @@ export default function TaskDetailPage() {
 
     const handleTaskDelete = async () => {
         try {
-            const res = await fetch(`tasks/${taskId}`, {
+            const res = await fetchApi(`tasks/${taskId}`, {
                 method: "DELETE"
             });
 
