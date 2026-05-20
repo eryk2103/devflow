@@ -71,9 +71,9 @@ export default function TaskDetailPage() {
     }
 
     return (
-        <Stack spacing={3}>
+        <Stack sx={{ alignItems: { md: "center" } }}>
             {task &&
-                <>
+                <Stack spacing={3} sx={{ minWidth: { md: 700 } }}>
                     <PageHeader title={task.name} path={`/project/${projectId}`} />
                     <Stack direction="row" spacing={1}>
                         <AlertDialog title="Delete task" text="Are you sure you want to delete this task?" onConfirmation={handleTaskDelete} />
@@ -81,8 +81,8 @@ export default function TaskDetailPage() {
                         <StatusDialog taskId={task.id} currentStatus={task.status} onSuccess={(status) => setTask({ ...task, status })} />
                     </Stack>
                     <Divider />
-                    <Stack sx={{ flexDirection: { md: "row" }, gap: 3 }}>
-                        <Stack sx={{ width: { sx: "100%", md: 700 } }} >
+                    <Stack>
+                        <Stack>
                             <Typography variant="h5">Details</Typography>
                             <Stack direction="row" sx={{ justifyContent: 'space-between', p: 2 }}>
                                 <Typography variant="body1">Status</Typography>
@@ -104,7 +104,7 @@ export default function TaskDetailPage() {
                                 <Typography variant="body1">{formatDate(task.createdAt)}</Typography>
                             </Stack>
                         </Stack>
-                        <Stack sx={{ width: "100%" }}>
+                        <Stack>
                             <Typography variant="h5">Description</Typography>
                             {task.description ?
                                 <Typography variant="body1">{task.description}</Typography> :
@@ -112,7 +112,7 @@ export default function TaskDetailPage() {
                             }
                         </Stack>
                     </Stack>
-                </>
+                </Stack>
             }
         </Stack >
     );
