@@ -15,6 +15,15 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:80"
+
 
 volumes:
   pgdata:
